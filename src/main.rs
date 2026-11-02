@@ -13,6 +13,7 @@ fn main() {
         .to_string();
     let mut counter = 1;
     let mut correct: i8 = 0;
+    let mut end: bool = false;
     println!("{date}");
     // creating file and appending (number) if file already exists
     let mut new_save = format!("/home/wiggly/Documents/Gabito/{date}.txt");
@@ -81,6 +82,13 @@ fn main() {
             }
     }
     let score = (correct as f64/ 20 as f64) * 100.0;
-    println!("You scored {correct} out of 20. That's {score:.1}%");
     file.write_all(format!("{score:.1}% correct").as_bytes()).expect("Failed to write to file.");
+    while end == false {
+        println!("You scored {correct} out of 20. That's {score:.1}%");
+        let mut choice = String::new();
+        io::stdin()
+            .read_line(&mut choice)
+            .expect("Ending program.");
+        end = true;
+    }
 }
