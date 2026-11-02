@@ -12,9 +12,10 @@ fn main() {
         .format("%d-%m-%Y")
         .to_string();
     let mut counter = 1;
+    let mut correct: i8 = 0;
     println!("{date}");
-    // creating file will append data later
-    let mut new_save = format!("/home/wiggly/Documents/Gabito/{date}({counter}).txt");
+    // creating file and appending (number) if file already exists
+    let mut new_save = format!("/home/wiggly/Documents/Gabito/{date}.txt");
     while Path::new(&new_save).exists() {
         new_save = format!("/home/wiggly/Documents/Gabito/{date}({counter}).txt");
         counter += 1;
@@ -43,6 +44,7 @@ fn main() {
             let answer = answer.trim().parse::<i32>();
             if answer == Ok(problem) {
                 println!("Correct!");
+                correct += 1;
                 file.write_all(format!("{a} + {b} = {:?}  => Correct!\n", answer).as_bytes())
                     .expect("Failed to write to file.");
             }
@@ -66,6 +68,7 @@ fn main() {
                 let answer = answer.trim().parse::<i32>();
                 if answer == Ok(problem) {
                     println!("Correct!");
+                    correct +=1;
                     file.write_all(format!("{a} - {b} = {:?}  => Correct!\n", answer).as_bytes())
                         .expect("Failed to write to file.");
                 }
@@ -77,4 +80,7 @@ fn main() {
 
             }
     }
+    let score = (correct as f64/ 20 as f64) * 100.0;
+    println!("You scored {correct} out of 20. That's {score:.1}%");
+    file.write_all(format!("{score:.1}% correct").as_bytes()).expect("Failed to write to file.");
 }
